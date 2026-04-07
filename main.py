@@ -119,13 +119,22 @@ def delete_user(request: Request, username: str = Form(...)):
 
 # ---------------- PLAYERS API ---------------- #
 @app.get("/players")
-def get_players(request: Request):
-    if not require_login(request):
-        raise HTTPException(status_code=401)
-
-    return os.listdir("static/players")
-
-@app.get("/players")
 def get_players():
-    folder = os.path.join(BASE_DIR, "static", "Players")
-    return os.listdir(folder)
+    folder = "static/Players"
+
+    try:
+        if not os.path.exists(folder):
+            return []
+
+        players = os.listdir(folder)
+
+        players = [
+            p for p in players
+            if p.lower().endswith((".jpg", ".jpeg", ".png"))
+        ]
+
+        return players
+
+    except Exception as e:
+        print("ERROR:", e)
+        raise HTTPException(status_code=500, detail=str(e))
