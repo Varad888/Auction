@@ -123,7 +123,11 @@ def get_players():
     folder = "static/Players"
 
     try:
+        # 🔥 Debug print (check Railway logs)
+        print("Looking for folder:", folder)
+
         if not os.path.exists(folder):
+            print("Folder NOT found")
             return []
 
         players = os.listdir(folder)
@@ -133,8 +137,10 @@ def get_players():
             if p.lower().endswith((".jpg", ".jpeg", ".png"))
         ]
 
+        print("Players found:", players)
+
         return players
 
     except Exception as e:
-        print("ERROR:", e)
+        print("ERROR in /players:", str(e))
         raise HTTPException(status_code=500, detail=str(e))
