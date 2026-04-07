@@ -686,51 +686,27 @@ function showPlayerModal() {
 }
 
 // ---- Mark Sold ----
-function markSold() {
-  const bid = parseInt(document.getElementById("bidAmount").value);
-  const team = document.getElementById("teamSelect").value;
+window.markSold = function () {
+    console.log("SOLD clicked");
 
-  if (!bid || !team) {
-    alert("⚠️ Please enter bid amount and select a team.");
-    return;
-  }
+    if (!selectedPlayer) return;
 
-  if (bid > teamPoints[team]) {
-    alert("❌ Team doesn't have enough points.");
-    return;
-  }
+    selectedPlayer.status = "sold";
+    updateUI();
+};
 
-  const playerInfo = {
-    name: getName(currentPlayer),
-    file: currentPlayer,
-    bid: bid,
-    team: team
-  };
+window.markUnsold = function () {
+    console.log("UNSOLD clicked");
 
-  availablePlayers = availablePlayers.filter(p => p !== currentPlayer);
-  soldPlayers.push(playerInfo);
-  teamPoints[team] -= bid;
-  updateTeamPointsDisplay();
+    if (!selectedPlayer) return;
 
-  actionStack.push({type:'sold', player: playerInfo});
-  redoStack = [];
+    selectedPlayer.status = "unsold";
+    updateUI();
+};
 
-  triggerFireworks();
-  resetSelection(`✅ SOLD to ${team} for ${bid} pts`);
-  closeModal();
-}
 
 // ---- Mark Unsold ----
-function markUnsold() {
-  availablePlayers = availablePlayers.filter(p => p !== currentPlayer);
-  unsoldPlayers.push(currentPlayer);
 
-  actionStack.push({type:'unsold', player: currentPlayer});
-  redoStack = [];
-
-  resetSelection("❌ Marked as UNSOLD");
-  closeModal();
-}
 
 // ---- Fireworks ----
 function triggerFireworks() {
