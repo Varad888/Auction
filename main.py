@@ -120,7 +120,7 @@ def delete_user(request: Request, username: str = Form(...)):
 # ---------------- PLAYERS API ---------------- #
 @app.get("/players")
 def get_players():
-    folder = "static/Players"
+    folder = "auction/static/Players"
 
     try:
         # 🔥 Debug print (check Railway logs)
