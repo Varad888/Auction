@@ -567,8 +567,10 @@ async function fetchPlayers() {
   const res = await fetch("/players");
   allPlayers = await res.json();
   availablePlayers = [...allPlayers];
-  drawWheel();
+
+  drawWheel();   // 🔥 MUST be inside here
 }
+
 
 function drawWheel() {
   let total = availablePlayers.length;
@@ -641,6 +643,7 @@ function spinWheel() {
     }
   }, 20);
 }
+
 
 function showPlayerModal() {
   document.getElementById("modalPlayerName").innerText = getName(currentPlayer);
