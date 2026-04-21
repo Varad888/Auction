@@ -4,6 +4,15 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 import os
 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+
+print("STATIC PATH:", STATIC_DIR)   # 👈 debug
+
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
 app = FastAPI()
 
 # Session middleware (for login)
