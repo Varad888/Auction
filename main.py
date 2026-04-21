@@ -120,27 +120,35 @@ def delete_user(request: Request, username: str = Form(...)):
 # ---------------- PLAYERS API ---------------- #
 @app.get("/players")
 def get_players():
-    folder = "static/Players"
+    folder = os.path.join("static", "Players")
 
     try:
-        # 🔥 Debug print (check Railway logs)
-        print("Looking for folder:", folder)
-
         if not os.path.exists(folder):
-            print("Folder NOT found")
+            print("Folder NOT found:", folder)
             return []
 
-        players = os.listdir(folder)
+        files = os.listdir(folder)
 
-        players = [
-            p for p in players
-            if p.lower().endswith((".jpg", ".jpeg", ".png"))
-        ]
+        players = []
 
-        print("Players found:", players)
+        for file in files:
+            if file.lower().endswith((".jpg", ".jpeg", ".png")):
+
+                # Remove extension
+                name = os.path.splitext(file)[0]
+
+                # Remove numbers like "10 "
+                name_parts = name.split()
+                if name_parts[0].isdigit():
+                    name = " ".join(name_parts[1:])
+
+                players.append({
+                    "name": name,
+                    "image": f"/static/Players/{file}"
+                })
 
         return players
 
     except Exception as e:
-        print("ERROR in /players:", str(e))
+        print("ERROR:", str(e))
         raise HTTPException(status_code=500, detail=str(e))
