@@ -638,7 +638,7 @@ function spinWheel() {
       clearInterval(interval);
       currentPlayer = availablePlayers[spinIndex];
       document.getElementById("selectedName").innerText = getName(currentPlayer);
-      document.getElementById("modalPlayerImage").src = "/static/players/" + currentPlayer;
+     document.getElementById("modalPlayerImage").src = encodeURI("/static/players/" + currentPlayer);
       showPlayerModal();
     }
   }, 20);
